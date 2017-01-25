@@ -45,8 +45,8 @@
 		"ParserFirstCallInit": [
 			"DynamicPageListHooks::onParserFirstCallInit"
 		],
-		"LoadExtensionSchemaUpdates": [
-			"DynamicPageListHooks::onLoadExtensionSchemaUpdates"
+		"BeforeInitialize": [
+			"DynamicPageListHooks::onBeforeInitialize"
 		]
 	},
 	"config": {

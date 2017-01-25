@@ -60,7 +60,7 @@ if (isset($dplMigrationTesting) && $dplMigrationTesting === true) {
 } else {
 	$wgHooks['ParserFirstCallInit'][]					= 'DynamicPageListHooks::onParserFirstCallInit';
 }
-$wgHooks['LoadExtensionSchemaUpdates'][]				= 'DynamicPageListHooks::onLoadExtensionSchemaUpdates';
+$wgHooks['BeforeInitialize'][]				= 'DynamicPageListHooks::onBeforeInitialize';
 
 //Give sysops permission to use updaterules and deleterules by default.
 if (!isset($wgGroupPermissions['sysop']['dpl_param_update_rules'])) {
