@@ -39,13 +39,14 @@
 		"DPL\\ParametersData": "classes/ParametersData.php",
 		"DPL\\Parse": "classes/Parse.php",
 		"DPL\\Query": "classes/Query.php",
-		"DPL\\Variables": "classes/Variables.php"
+		"DPL\\Variables": "classes/Variables.php",
+		"DynamicPageListUpdateMaintenance": "classes/DynamicPageListUpdateMaintenance.php"
 	},
 	"Hooks": {
 		"ParserFirstCallInit": [
 			"DynamicPageListHooks::onParserFirstCallInit"
 		],
-		"LoadExtensionSchemaUpdates": [
+		"BeforeInitialize": [
 			"DynamicPageListHooks::onLoadExtensionSchemaUpdates"
 		]
 	},

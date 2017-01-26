@@ -54,6 +54,7 @@ $wgAutoloadClasses['DPL\ParametersData']			= "{$extDir}/classes/ParametersData.p
 $wgAutoloadClasses['DPL\Parse']						= "{$extDir}/classes/Parse.php";
 $wgAutoloadClasses['DPL\Query']						= "{$extDir}/classes/Query.php";
 $wgAutoloadClasses['DPL\Variables']					= "{$extDir}/classes/Variables.php";
+$wgAutoloadClasses['DynamicPageListUpdateMaintenance'] = "{$extDir}/classes/DynamicPageListUpdateMaintenance.php";
 
 if (isset($dplMigrationTesting) && $dplMigrationTesting === true) {
 	$wgHooks['ParserFirstCallInit'][]					= 'DynamicPageListHooks::setupMigration';

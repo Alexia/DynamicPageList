@@ -1,12 +1,12 @@
 <?php
 /**
- * 
+ *
  * @file
  * @ingroup Extensions
  * @link http://www.mediawiki.org/wiki/Extension:DynamicPageList_(third-party)	Documentation
- * @author n:en:User:IlyaHaykinson 
- * @author n:en:User:Amgine 
- * @author w:de:Benutzer:Unendlich 
+ * @author n:en:User:IlyaHaykinson
+ * @author n:en:User:Amgine
+ * @author w:de:Benutzer:Unendlich
  * @author m:User:Dangerman <cyril.dangerville@gmail.com>
  * @author m:User:Algorithmix <gero.scholz@gmx.de>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -605,32 +605,11 @@ class DynamicPageListHooks {
 	 * @param	object	[Optional] DatabaseUpdater Object
 	 * @return	boolean	true
 	 */
-	static public function onLoadExtensionSchemaUpdates(DatabaseUpdater $updater = null) {
-		$extDir = __DIR__;
-
-		$updater->addExtensionUpdate([[__CLASS__, 'createDPLTemplate']]);
-
+	static public function onLoadExtensionSchemaUpdates( $updater ) {
+		//start job after update.php is almost done
+		$updater->addPostDatabaseUpdateMaintenance( 'DynamicPageListUpdateMaintenance' );
 		return true;
 	}
 
-	/**
-	 * Creates the DPL template when updating.
-	 *
-	 * @access	public
-	 * @return	void
-	 */
-	static public function createDPLTemplate() {
-		//Make sure page "Template:Extension DPL" exists
-		$title = Title::newFromText('Template:Extension DPL');
-
-		if (!$title->exists()) {
-			$article = new Article($title);
-			$article->doEdit(
-				"<noinclude>This page was automatically created. It serves as an anchor page for all '''[[Special:WhatLinksHere/Template:Extension_DPL|invocations]]''' of [http://mediawiki.org/wiki/Extension:DynamicPageList Extension:DynamicPageList (DPL)].</noinclude>",
-				$title,
-				EDIT_NEW | EDIT_FORCE_BOT
-			);
-		}
-	}
 }
 ?>
