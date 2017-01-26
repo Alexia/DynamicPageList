@@ -54,13 +54,14 @@ $wgAutoloadClasses['DPL\ParametersData']			= "{$extDir}/classes/ParametersData.p
 $wgAutoloadClasses['DPL\Parse']						= "{$extDir}/classes/Parse.php";
 $wgAutoloadClasses['DPL\Query']						= "{$extDir}/classes/Query.php";
 $wgAutoloadClasses['DPL\Variables']					= "{$extDir}/classes/Variables.php";
+$wgAutoloadClasses['DynamicPageListUpdateMaintenance'] = "{$extDir}/classes/DynamicPageListUpdateMaintenance.php";
 
 if (isset($dplMigrationTesting) && $dplMigrationTesting === true) {
 	$wgHooks['ParserFirstCallInit'][]					= 'DynamicPageListHooks::setupMigration';
 } else {
 	$wgHooks['ParserFirstCallInit'][]					= 'DynamicPageListHooks::onParserFirstCallInit';
 }
-$wgHooks['BeforeInitialize'][]				= 'DynamicPageListHooks::onBeforeInitialize';
+$wgHooks['LoadExtensionSchemaUpdates'][]				= 'DynamicPageListHooks::onLoadExtensionSchemaUpdates';
 
 //Give sysops permission to use updaterules and deleterules by default.
 if (!isset($wgGroupPermissions['sysop']['dpl_param_update_rules'])) {
