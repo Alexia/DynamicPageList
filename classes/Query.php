@@ -235,9 +235,6 @@ class Query {
 			}
 			if (count($this->orderBy)) {
 				$options['ORDER BY'] = $this->orderBy;
-				$_lastOrder = array_pop($options['ORDER BY']);
-				$_lastOrder .= " ".$this->direction;
-				$options['ORDER BY'][] = $_lastOrder;
 			}
 		}
 		if ($this->parameters->getParameter('goal') == 'categories') {
@@ -495,7 +492,11 @@ class Query {
 		if (empty($orderBy)) {
 			throw new \MWException(__METHOD__.': An empty order by clause was passed.');
 		}
-		$this->orderBy[] = $orderBy;
+		if (!preg_match('/(asc(ending)?|desc(ending)?)$/i', $orderBy)) {
+			$this->orderBy[] = "$orderBy " . $this->direction;
+		}	else {
+			$this->orderBy[] = $orderBy;
+		}
 		return true;
 	}
 
@@ -823,8 +824,8 @@ class Query {
 				'rev.rev_timestamp'
 			]
 		);
-		$this->addOrderBy('rev.rev_id');
 		$this->setOrderDir('DESC');
+		$this->addOrderBy('rev.rev_id');
 		$this->addWhere(
 			[
 				$this->tableNames['page'].'.page_id = rev.rev_page',
@@ -848,8 +849,8 @@ class Query {
 				'rev.rev_timestamp'
 			]
 		);
-		$this->addOrderBy('rev.rev_id');
 		$this->setOrderDir('DESC');
+		$this->addOrderBy('rev.rev_id');
 		$this->addWhere(
 			[
 				$this->tableNames['page'].'.page_id = rev.rev_page',
