@@ -615,7 +615,7 @@ class LST {
 							if ($catlist != '') {
 								$argChain .= "|%CATLIST%=$catlist";
 							}
-							$argChain .= '|%DATE%=' . $date . '|%USER%=' . $user . '|%ARGS%=' . str_replace('|', '§', preg_replace('/[}]+/', '}', preg_replace('/[{]+/', '{', substr($invocation, strlen($template2) + 2)))) . '}}';
+							$argChain .= '|%DATE%=' . $date . '|%USER%=' . $user . '|%ARGS%=' . str_replace('|', '§', str_replace('}', '❵', str_replace('{', '❴', substr($invocation, strlen($template2) + 2)))) . '}}';
 							$output[++$n] = $parser->preprocess($argChain, $parser->mTitle, $parser->mOptions);
 						}
 						break;
