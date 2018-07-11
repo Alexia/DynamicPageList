@@ -709,7 +709,9 @@ class Parse {
 				foreach ($operatorTypes as $operatorType => $categoryGroups) {
 					foreach ($categoryGroups as $categories) {
 						if (is_array($categories)) {
-							$totalCategories += count($categories);
+							if (is_array($categories)) {
+								$totalCategories += count($categories);
+							}
 						}
 					}
 				}
