@@ -204,15 +204,15 @@ class Query {
 		//Always add nonincludeable namespaces.
 		if (is_array($wgNonincludableNamespaces) && count($wgNonincludableNamespaces)) {
 			// Check if Lockdown installed
-			if(!empty($wgNamespacePermissionLockdown)) {
+			if (!empty($wgNamespacePermissionLockdown)) {
 				$addNotWhere = [];
 				// Check for each "NonincludableNamespace" if permission to read is granted for current user (group)
-				foreach ($wgNonincludableNamespaces as $ns_id_i) {
-					if (array_key_exists($ns_id_i, $wgNamespacePermissionLockdown)) {
+				foreach ($wgNonincludableNamespaces as $namespaceId) {
+					if (isset($wgNamespacePermissionLockdown[$namespaceId])) {
 						// Check for "read" permissions of current user on NonincludableNamespaces, not empty = read permissions!
-						$outp = array_intersect($wgNamespacePermissionLockdown[$ns_id_i]['read'], $wgUser->getGroups());
+						$outp = array_intersect($wgNamespacePermissionLockdown[$namespaceId]['read'], $wgUser->getGroups());
 						if (empty($outp)) {
-							$addNotWhere[] = $ns_id_i;
+							$addNotWhere[] = $namespaceId;
 						}
 					}
 				}
