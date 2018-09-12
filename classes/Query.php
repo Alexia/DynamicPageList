@@ -205,22 +205,23 @@ class Query {
 		if (is_array($wgNonincludableNamespaces) && count($wgNonincludableNamespaces)) {
 			// Check if Lockdown installed
 			if(!empty($wgNamespacePermissionLockdown)) {
-				$addNotWhere = array();
+				$addNotWhere = [];
 				// Check for each "NonincludableNamespace" if permission to read is granted for current user (group)
-				foreach($wgNonincludableNamespaces as $ns_id_i) {
-					if(array_key_exists($ns_id_i,$wgNamespacePermissionLockdown)) {
+				foreach ($wgNonincludableNamespaces as $ns_id_i) {
+					if (array_key_exists($ns_id_i, $wgNamespacePermissionLockdown)) {
 						// Check for "read" permissions of current user on NonincludableNamespaces, not empty = read permissions!
-						$outp = array_intersect($wgNamespacePermissionLockdown[$ns_id_i]['read'],$wgUser->getGroups());
-						if(empty($outp)) $addNotWhere[] = $ns_id_i;
+						$outp = array_intersect($wgNamespacePermissionLockdown[$ns_id_i]['read'], $wgUser->getGroups());
+						if (empty($outp)) {
+							$addNotWhere[] = $ns_id_i;
+						}
 					}
 				}
-			}
-			else {
+			} else {
 				// If Lockdown not installed take the normal NonincludableNamespaces
 				$addNotWhere = $wgNonincludableNamespaces;
 			}
 			// Recheck if still NS in (new) array, than kill all namespaces that shouldn't be included
-			if(is_array($addNotWhere) && count($addNotWhere)) {
+			if (is_array($addNotWhere) && count($addNotWhere)) {
 				$this->addNotWhere(
 					[
 						$this->tableNames['page'].'.page_namespace' => $addNotWhere // Changed var
