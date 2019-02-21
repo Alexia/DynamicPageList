@@ -1182,7 +1182,7 @@ class Parameters extends ParametersData {
 				if (is_array($sectionLabels[$i]) && $sectionLabels[$i][0] == '#') {
 					$multiSectionSeparators[$i] = "\n----\n";
 				}
-				if ($sectionLabels[$i][0] == '#') {
+				if ($sectionLabels[$i] && $sectionLabels[$i][0] == '#') {
 					$multiSectionSeparators[$i] = "\n----\n";
 				} else {
 					$multiSectionSeparators[$i] = "<br/>\n";
