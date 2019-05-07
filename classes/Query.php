@@ -168,7 +168,11 @@ class Query {
 	 */
 	public function buildAndSelect($calcRows = false) {
 		global $wgNonincludableNamespaces;
-
+		// Get namespace permission from Lockdown extension
+		global $wgNamespacePermissionLockdown;
+		// Get user object from current logged in user
+		global $wgUser;
+		
 		$options = [];
 
 		$parameters = $this->parameters->getAllParameters();
@@ -199,11 +203,31 @@ class Query {
 		}
 		//Always add nonincludeable namespaces.
 		if (is_array($wgNonincludableNamespaces) && count($wgNonincludableNamespaces)) {
-			$this->addNotWhere(
-				[
-					$this->tableNames['page'] . '.page_namespace' => $wgNonincludableNamespaces
-				]
-			);
+			// Check if Lockdown installed
+			if (!empty($wgNamespacePermissionLockdown)) {
+				$addNotWhere = [];
+				// Check for each "NonincludableNamespace" if permission to read is granted for current user (group)
+				foreach ($wgNonincludableNamespaces as $namespaceId) {
+					if (isset($wgNamespacePermissionLockdown[$namespaceId])) {
+						// Check for "read" permissions of current user on NonincludableNamespaces, not empty = read permissions!
+						$outp = array_intersect($wgNamespacePermissionLockdown[$namespaceId]['read'], $wgUser->getGroups());
+						if (empty($outp)) {
+							$addNotWhere[] = $namespaceId;
+						}
+					}
+				}
+			} else {
+				// If Lockdown not installed take the normal NonincludableNamespaces
+				$addNotWhere = $wgNonincludableNamespaces;
+			}
+			// Recheck if still NS in (new) array, than kill all namespaces that shouldn't be included
+			if (is_array($addNotWhere) && count($addNotWhere)) {
+				$this->addNotWhere(
+					[
+						$this->tableNames['page'].'.page_namespace' => $addNotWhere // Changed var
+					]
+				);
+			}
 		}
 
 		if ($this->offset !== false) {
